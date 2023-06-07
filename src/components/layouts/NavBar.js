@@ -46,7 +46,7 @@ export default function ButtonAppBar() {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                <Box
+                {/* <Box
                   component="img"
                   sx={{
                     height: "50px",
@@ -56,9 +56,9 @@ export default function ButtonAppBar() {
                     backgroundPosition: "center",
                     marginTop: "8px",
                   }}
-                  src="https://firebasestorage.googleapis.com/v0/b/s2a-e8459.appspot.com/o/assets%2Fs2alogo.png?alt=media&token=3ff1f07b-357a-4f2f-929f-660729733b17"
+                  src=""
                   alt="random"
-                ></Box>
+                ></Box> */}
               </Typography>
               <Button color="inherit" onClick={onLogout}>
                 Logout

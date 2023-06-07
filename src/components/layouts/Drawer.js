@@ -11,56 +11,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleClose } from "../../store/actions/authActions";
 import { useNavigate } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import PaymentIcon from "@mui/icons-material/Payment";
-import PaymentsIcon from "@mui/icons-material/Payments";
-import PlayLessonIcon from "@mui/icons-material/PlayLesson";
-import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import FeedIcon from "@mui/icons-material/Feed";
-import BackpackIcon from "@mui/icons-material/Backpack";
 
 const routes = [
   {
-    route: "/studentDetail",
+    route: "/dashboard",
     text: "Dashboard",
     icon: <DashboardIcon />,
-  },
-  {
-    route: "/studentPaymentDetail",
-    text: "Payment",
-    icon: <PaymentIcon />,
-  },
-  {
-    route: "/studyPackPaymentDetail",
-    text: "Study Pack Payment",
-    icon: <PaymentsIcon />,
-  },
-  {
-    route: "/manageLessons",
-    text: "Lessons",
-    icon: <PlayLessonIcon />,
-  },
-  {
-    route: "/manageVideo",
-    text: "Videos",
-    icon: <OndemandVideoIcon />,
-  },
-
-  {
-    route: "/managePdf",
-    text: "Tutes",
-    icon: <PictureAsPdfIcon />,
-  },
-  {
-    route: "/managePaper",
-    text: "Papers",
-    icon: <FeedIcon />,
-  },
-
-  {
-    route: "/manageStudyPack",
-    text: "Study Pack",
-    icon: <BackpackIcon />,
   },
 ];
 
