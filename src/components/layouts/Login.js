@@ -13,6 +13,7 @@ import Alert from "@material-ui/lab/Alert";
 import axios from "../../utils/lib/axios";
 import styles from "../../utils/styles/Login.module.css";
 import { useNavigate } from "react-router-dom";
+import LoginImg from "../../assets/login.jpg";
 
 // validation
 import { Formik, Form, Field } from "formik";
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   padding: {
     padding: theme.spacing(3),
+    borderRadius: "10px",
     width: "45vw",
     height: "auto",
     [theme.breakpoints.down("sm")]: {
@@ -60,6 +62,13 @@ const useStyles = makeStyles((theme) => ({
   button2: {
     marginTop: "1rem",
     color: "#2cca5c",
+  },
+
+  LoginImg: {
+    width: "200px",
+    objectFit: "cover",
+    objectPosition: "center",
+    borderRadius: "10px",
   },
 }));
 
@@ -122,99 +131,122 @@ function Login(props) {
       <div className={styles.Wrapper}>
         <div className={styles.Right}>
           <div className={styles.Login}>
-            <Grid item md={12}>
-              <Card className={classes.padding} variant="outlined">
-                {/* <Typography className={classes.center}>
+            <Grid container spacing={1}>
+              <Grid item md={6} xs={12}>
+                <img
+                  src={LoginImg}
+                  alt="login"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "center",
+                    borderRadius: "10px",
+                  }}
+                />
+              </Grid>
+              <Grid
+                container
+                item
+                md={6}
+                xs={12}
+                justifyContent="center"
+                alignContent="center"
+                alignItems="center"
+              >
+                <Card className={classes.padding} variant="outlined">
+                  {/* <Typography className={classes.center}>
                   Login to Your Account
                 </Typography> */}
-                <h1 className={classes.center}>Login to Your Account</h1>
+                  <h1 className={classes.center}>Login to Your Account</h1>
 
-                <Formik
-                  initialValues={initialValues}
-                  onSubmit={submit}
-                  validationSchema={SignUpSchema}
-                >
-                  {({ dirty, isValid }) => {
-                    return (
-                      <Form>
-                        <CardContent>
-                          <Field
-                            name="email"
-                            label="Email"
-                            component={TextField}
-                            variant="outlined"
-                            fullWidth
-                            margin="dense"
-                          ></Field>
+                  <Formik
+                    initialValues={initialValues}
+                    onSubmit={submit}
+                    validationSchema={SignUpSchema}
+                  >
+                    {({ dirty, isValid }) => {
+                      return (
+                        <Form>
+                          <CardContent>
+                            <Field
+                              name="email"
+                              label="Email"
+                              component={TextField}
+                              variant="outlined"
+                              fullWidth
+                              margin="dense"
+                            ></Field>
 
-                          <Field
-                            name="password"
-                            label="Password"
-                            component={TextField}
-                            variant="outlined"
-                            fullWidth
-                            margin="dense"
-                            type="password"
-                          ></Field>
-                        </CardContent>
-                        <CardActions>
-                          <Grid container justifyContent="center">
-                            <Grid item>
+                            <Field
+                              name="password"
+                              label="Password"
+                              component={TextField}
+                              variant="outlined"
+                              fullWidth
+                              margin="dense"
+                              type="password"
+                            ></Field>
+                          </CardContent>
+                          <CardActions>
+                            <Grid container justifyContent="center">
+                              <Grid item>
+                                <Button
+                                  variant="contained"
+                                  className={classes.button}
+                                  disabled={!dirty || !isValid}
+                                  type="submit"
+                                  size="large"
+                                >
+                                  login
+                                </Button>
+                              </Grid>
+                            </Grid>
+                          </CardActions>
+                          {/* <Grid container>
+                            <Grid
+                              container
+                              item
+                              xs={12}
+                              md={6}
+                              className={classes.button2}
+                              justifyContent="center"
+                            >
                               <Button
-                                variant="contained"
-                                className={classes.button}
-                                disabled={!dirty || !isValid}
-                                type="submit"
-                                size="large"
+                                style={{
+                                  color: "#35bfff",
+                                  textTransform: "none",
+                                }}
+                                onClick={() => navigate("/passwordhelp")}
                               >
-                                login
+                                I forgot my password
                               </Button>
                             </Grid>
-                          </Grid>
-                        </CardActions>
-                        <Grid container>
-                          <Grid
-                            container
-                            item
-                            xs={12}
-                            md={6}
-                            className={classes.button2}
-                            justifyContent="center"
-                          >
-                            <Button
-                              style={{
-                                color: "#35bfff",
-                                textTransform: "none",
-                              }}
-                              onClick={() => navigate("/passwordhelp")}
+                            <Grid
+                              container
+                              item
+                              xs={12}
+                              md={6}
+                              className={classes.button2}
+                              justifyContent="center"
                             >
-                              I forgot my password
-                            </Button>
-                          </Grid>
-                          <Grid
-                            container
-                            item
-                            xs={12}
-                            md={6}
-                            className={classes.button2}
-                            justifyContent="center"
-                          >
-                            <Button
-                              style={{
-                                color: "#35bfff",
-                                textTransform: "none",
-                              }}
-                              onClick={() => navigate("/signup")}
-                            >
-                              I need an account
-                            </Button>
-                          </Grid>
-                        </Grid>
-                      </Form>
-                    );
-                  }}
-                </Formik>
-              </Card>
+                              <Button
+                                style={{
+                                  color: "#35bfff",
+                                  textTransform: "none",
+                                }}
+                                onClick={() => navigate("/signup")}
+                              >
+                                I need an account
+                              </Button>
+                            </Grid>
+                          </Grid> */}
+                        </Form>
+                      );
+                    }}
+                  </Formik>
+                </Card>
+              </Grid>
             </Grid>
             {alert.showAlert && (
               <Grid item md={12} style={{ marginTop: 5 }}>
