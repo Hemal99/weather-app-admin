@@ -5,6 +5,7 @@ export default function Dashboard(props) {
   //search
 
   return (
+    <div className="dashboard">
     <div class="container">
       <div class="weather-side">
         <div class="weather-gradient"></div>
@@ -103,6 +104,7 @@ export default function Dashboard(props) {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 }
