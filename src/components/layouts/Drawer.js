@@ -14,8 +14,8 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const routes = [
   {
-    route: "/dashboard",
-    text: "Dashboard",
+    route: "/prompts",
+    text: "Prompts",
     icon: <DashboardIcon />,
   },
 ];

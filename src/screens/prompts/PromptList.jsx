@@ -72,7 +72,7 @@ const videoColumns = [
     format: (value) => value.toLocaleString("en-US"),
   },
   { id: "Description", label: "Description", align: "right" },
-  { id: "Subject", label: "subject", align: "right" },
+  { id: "Action", label: "Action", align: "right" },
 ];
 
 export default function LessonList(props) {
@@ -83,9 +83,9 @@ export default function LessonList(props) {
 
   const navigate = useNavigate();
 
-  const getLessonList = async () => {
+  const getPromptsList = async () => {
     try {
-      const { data } = await axios.get("/admin/get-lessons");
+      const { data } = await axios.get("/admin/prompts");
 
       setData(data);
     } catch (e) {}
@@ -103,12 +103,12 @@ export default function LessonList(props) {
   const deleteLesson = async (id) => {
     try {
       await axios.delete(`/admin/delete-lesson/${id}`);
-      getLessonList();
+      getPromptsList();
     } catch (err) {}
   };
 
   useEffect(() => {
-    getLessonList();
+    getPromptsList();
   }, []);
 
   return (
@@ -131,7 +131,7 @@ export default function LessonList(props) {
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
-                Lesson List
+                Prompt List
               </Typography>
               <div
                 style={{
@@ -172,7 +172,7 @@ export default function LessonList(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data
+              {data.length>0 && data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -182,9 +182,9 @@ export default function LessonList(props) {
                       tabIndex={-1}
                       key={row.code}
                     >
-                      <TableCell>{row?.lessonName}</TableCell>
-                      <TableCell>{row?.lessonDescription}</TableCell>
-                      <TableCell>{row?.subject}</TableCell>
+                      <TableCell>{row?.title}</TableCell>
+                      <TableCell>{row?.description}</TableCell>
+                      <TableCell>{row?.action}</TableCell>
                       <TableCell>
                         <Button
                           variant="outlined"
@@ -198,7 +198,7 @@ export default function LessonList(props) {
                 })}
             </TableBody>
           </Table>
-          <div
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "flex-end",
@@ -213,7 +213,7 @@ export default function LessonList(props) {
             >
               <AddIcon />
             </Fab>
-          </div>
+          </div> */}
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}

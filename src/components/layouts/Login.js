@@ -101,7 +101,7 @@ function Login(props) {
       const { signature, id } = data;
       props.login(signature, id);
 
-      navigate("/dashboard");
+      navigate("/prompts");
     } catch (error) {
       if (error.response.status === 401) {
         setAlert({

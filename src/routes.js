@@ -1,9 +1,10 @@
-import Dashboard from "screens/dashboard/Dashboard";
+
+import PromptList from "screens/prompts/PromptList";
 
 export const routes = [
   {
-    name: "dashboard",
-    element: <Dashboard />,
-    path: "/dashboard",
+    name: "prompts",
+    element: <PromptList />,
+    path: "/prompts",
   },
 ];
