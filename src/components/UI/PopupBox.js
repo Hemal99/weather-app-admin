@@ -6,6 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "utils/lib/axios";
+import { Grid,TextField } from "@material-ui/core";
 
 export default function PopupBox(props) {
   const {
@@ -13,20 +14,19 @@ export default function PopupBox(props) {
     handleClose,
     slip,
     id,
-    getStudentDetails,
+    getPromptsList,
     setAlert,
     paymentId,
+    selectedRow,
   } = props;
 
   const handleClick = async (id, action) => {
     try {
       const payload = {
         _id: id,
-        approval: action,
-        paymentId: paymentId,
       };
-      await axios.put("/admin/approve", payload);
-      getStudentDetails();
+      await axios.put(`/admin/approve-prompts/${id}/${action}`, payload);
+      getPromptsList();
 
       if (action) {
         setAlert({
@@ -68,29 +68,41 @@ export default function PopupBox(props) {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       maxWidth="lg"
+      
+      
     >
-      <DialogTitle id="alert-dialog-title">{"Student Slip"}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{"Prompt"}</DialogTitle>
       <DialogContent>
-        <div sx={{ maxWidth: "100%", objectFit: "contain" }}>
-          <img
-            src={slip}
-            alt={"slip"}
-            loading="lazy"
-            style={{ objectFit: "cover", width: "100%", height: "100%" }}
-          />
-        </div>
+       
+        <Grid container spacing={2} style={{ marginTop: "10px" }}>
+        <Grid item xs={12}>
+            <TextField variant="outlined" label="Title" disabled value={selectedRow?.title} fullWidth />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField variant="outlined" label="Category" disabled value={selectedRow?.category} fullWidth />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField variant="outlined" label="Description" disabled value={selectedRow?.description} fullWidth />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField variant="outlined" label="Input Params" disabled value={selectedRow?.keywords} fullWidth />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField variant="outlined" label="Prompt" multiline disabled value={selectedRow?.prompt} fullWidth />
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button
           variant="contained"
           style={{ background: "green", marginRight: "10px" }}
-          onClick={() => handleClick(id, true)}
+          onClick={() => handleClick(selectedRow?._id, "Approve")}
         >
           Accept
         </Button>
         <Button
           variant="contained"
-          onClick={() => handleClick(id, false)}
+          onClick={() => handleClick(selectedRow?._id, "Reject")}
           style={{ background: "red" }}
           autoFocus
         >

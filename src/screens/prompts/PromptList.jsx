@@ -10,18 +10,20 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
+
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button,  } from "@material-ui/core";
+import Chip from "@mui/material/Chip";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "../../utils/lib/axios";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
+
 import { useNavigate } from "react-router-dom";
+import PopupBox from "components/UI/PopupBox";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -73,13 +75,26 @@ const videoColumns = [
   },
   { id: "Description", label: "Description", align: "right" },
   { id: "Action", label: "Action", align: "right" },
+  {
+    id: "Status",
+    label: "Status",
+    align: "right",
+  },
 ];
 
 export default function LessonList(props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState({});
 
   const [data, setData] = useState([]);
+
+  const [alert, setAlert] = useState({
+    showAlert: false,
+    severity: "success",
+    message: "",
+  });
 
   const navigate = useNavigate();
 
@@ -95,6 +110,16 @@ export default function LessonList(props) {
     setPage(newPage);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = (row) => {
+    console.log(row)
+    setSelectedRow(row);
+    setOpen(true);
+  }
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -102,7 +127,7 @@ export default function LessonList(props) {
 
   const deleteLesson = async (id) => {
     try {
-      await axios.delete(`/admin/delete-lesson/${id}`);
+      await axios.delete(`/admin/delete-prompt/${id}`);
       getPromptsList();
     } catch (err) {}
   };
@@ -167,35 +192,51 @@ export default function LessonList(props) {
                 ))}
 
                 <TableCell key="command" align="left">
+                  View Prompt
+                </TableCell>
+                <TableCell key="command" align="left">
                   Delete
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.length>0 && data
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      <TableCell>{row?.title}</TableCell>
-                      <TableCell>{row?.description}</TableCell>
-                      <TableCell>{row?.action}</TableCell>
-                      <TableCell>
-                        <Button
-                          variant="outlined"
-                          onClick={() => deleteLesson(row?._id)}
-                        >
-                          <DeleteIcon color="error" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+              {data.length > 0 &&
+                data
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.code}
+                      >
+                        <TableCell>{row?.title}</TableCell>
+                        <TableCell>{row?.description}</TableCell>
+                        <TableCell>{row?.action}</TableCell>
+                        <TableCell>
+                          {row?.status === "Approved" ? (
+                            <Chip label="Approved" color="success" variant="outlined" />
+                          ) : row?.status === "Pending" ? (
+                            <Chip label="Pending" color="primary"  variant="outlined" />
+                          ) : row?.status === "Rejected" ? (
+                            <Chip label="Rejected" color="error"  variant="outlined" />
+                          ):""}
+                        </TableCell>
+                        <TableCell>
+                          <Button variant="outlined" onClick={()=>handleOpen(row)}>View</Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outlined"
+                            onClick={() => deleteLesson(row?._id)}
+                          >
+                            <DeleteIcon color="error" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
             </TableBody>
           </Table>
           {/* <div
@@ -225,6 +266,16 @@ export default function LessonList(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <PopupBox
+        open={open}
+        handleClose={handleClose}
+        selectedRow={selectedRow}
+        // slip={slip}
+        // id={id}
+        getPromptsList={getPromptsList}
+        setAlert={setAlert}
+        // paymentId={paymentId}
+      />
     </React.Fragment>
   );
 }
