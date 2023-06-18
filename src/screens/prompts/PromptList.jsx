@@ -87,8 +87,12 @@ export default function LessonList(props) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState({});
+  const [searchText, setSearchText] = useState("");
+
 
   const [data, setData] = useState([]);
+  const [filterData, setFilterData] = useState(data);
+
 
   const [alert, setAlert] = useState({
     showAlert: false,
@@ -102,6 +106,7 @@ export default function LessonList(props) {
       const { data } = await axios.get("/admin/prompts");
 
       setData(data);
+      setFilterData(data);
     } catch (e) {}
   };
 
@@ -129,6 +134,25 @@ export default function LessonList(props) {
       await axios.delete(`/admin/delete-prompt/${id}`);
       getPromptsList();
     } catch (err) {}
+  };
+
+
+   //search
+   const onSearch = (e) => {
+    const text = String(e.target.value).toLowerCase();
+    setSearchText(text);
+    if (text) {
+      // eslint-disable-next-line
+      const result = data.filter((item) => {
+        const str = JSON.stringify(item).toLowerCase();
+
+        if (str.search(text) >= 0) return item;
+      });
+      setPage(0);
+      setFilterData(result);
+    } else {
+      setFilterData(data);
+    }
   };
 
   useEffect(() => {
@@ -177,8 +201,8 @@ export default function LessonList(props) {
                   <StyledInputBase
                     placeholder="Search…"
                     inputProps={{ "aria-label": "search" }}
-                    // onChange={onSearch}
-                    // value={searchText}
+                    onChange={onSearch}
+                    value={searchText}
                   />
                 </Search>
               </div>
@@ -206,8 +230,8 @@ export default function LessonList(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.length > 0 &&
-                data
+              {filterData.length > 0 &&
+                filterData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
                     return (

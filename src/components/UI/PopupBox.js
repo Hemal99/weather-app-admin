@@ -6,17 +6,16 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "utils/lib/axios";
-import { Grid,TextField } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 
 export default function PopupBox(props) {
   const {
     open,
     handleClose,
-    slip,
-    id,
+
     getPromptsList,
     setAlert,
-    paymentId,
+
     selectedRow,
   } = props;
 
@@ -68,27 +67,55 @@ export default function PopupBox(props) {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       maxWidth="lg"
-      
-      
     >
       <DialogTitle id="alert-dialog-title">{"Prompt"}</DialogTitle>
       <DialogContent>
-       
         <Grid container spacing={2} style={{ marginTop: "10px" }}>
-        <Grid item xs={12}>
-            <TextField variant="outlined" label="Title" disabled value={selectedRow?.title} fullWidth />
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              label="Title"
+              disabled
+              value={selectedRow?.title}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12}>
-            <TextField variant="outlined" label="Category" disabled value={selectedRow?.category} fullWidth />
+            <TextField
+              variant="outlined"
+              label="Category"
+              disabled
+              value={selectedRow?.category}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12}>
-            <TextField variant="outlined" label="Description" disabled value={selectedRow?.description} fullWidth />
+            <TextField
+              variant="outlined"
+              label="Description"
+              disabled
+              value={selectedRow?.description}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12}>
-            <TextField variant="outlined" label="Input Params" disabled value={selectedRow?.keywords} fullWidth />
+            <TextField
+              variant="outlined"
+              label="Input Params"
+              disabled
+              value={selectedRow?.inputParams}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12}>
-            <TextField variant="outlined" label="Prompt" multiline disabled value={selectedRow?.prompt} fullWidth />
+            <TextField
+              variant="outlined"
+              label="Prompt"
+              multiline
+              disabled
+              value={selectedRow?.prompt}
+              fullWidth
+            />
           </Grid>
         </Grid>
       </DialogContent>
