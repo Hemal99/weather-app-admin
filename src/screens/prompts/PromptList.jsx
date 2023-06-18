@@ -22,8 +22,9 @@ import Chip from "@mui/material/Chip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "../../utils/lib/axios";
 
-import { useNavigate } from "react-router-dom";
+
 import PopupBox from "components/UI/PopupBox";
+import { Alert } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -74,7 +75,6 @@ const videoColumns = [
     format: (value) => value.toLocaleString("en-US"),
   },
   { id: "Description", label: "Description", align: "right" },
-  { id: "Action", label: "Action", align: "right" },
   {
     id: "Status",
     label: "Status",
@@ -96,7 +96,6 @@ export default function LessonList(props) {
     message: "",
   });
 
-  const navigate = useNavigate();
 
   const getPromptsList = async () => {
     try {
@@ -139,6 +138,13 @@ export default function LessonList(props) {
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>
+        {
+          alert.showAlert && (
+            <Alert severity={alert.severity} onClose={() => setAlert({ ...alert, showAlert: false })}>
+              {alert.message}
+            </Alert>
+          )
+        }
         <AppBar position="static">
           <Toolbar>
             <div
@@ -213,7 +219,6 @@ export default function LessonList(props) {
                       >
                         <TableCell>{row?.title}</TableCell>
                         <TableCell>{row?.description}</TableCell>
-                        <TableCell>{row?.action}</TableCell>
                         <TableCell>
                           {row?.status === "Approved" ? (
                             <Chip label="Approved" color="success" variant="outlined" />

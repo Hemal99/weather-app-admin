@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// const baseUrl = "https://s2a-academy.herokuapp.com";
+// const baseUrl = "https://prompt-rating-e4d47952e7d8.herokuapp.com/";
 
 const baseUrl = "http://localhost:5000";
 
