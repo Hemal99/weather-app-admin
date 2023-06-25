@@ -11,8 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleClose } from "../../store/actions/authActions";
 import { useNavigate } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import GroupIcon from '@mui/icons-material/Group';
 
 const routes = [
+  {
+    route: "/users",
+    text: "Users",
+    icon: <GroupIcon />,
+  },
   {
     route: "/prompts",
     text: "Prompts",

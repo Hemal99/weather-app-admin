@@ -19,9 +19,8 @@ import { Typography, Button } from "@material-ui/core";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "../../utils/lib/axios";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
-import { useNavigate } from "react-router-dom";
+
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -66,13 +65,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 const videoColumns = [
   {
-    id: "Name",
-    label: "Name",
+    id: "Id",
+    label: "User Id",
     align: "right",
-    format: (value) => value.toLocaleString("en-US"),
   },
-  { id: "Description", label: "Description", align: "right" },
-  { id: "Subject", label: "subject", align: "right" },
+  { id: "Name", label: "Name", align: "right" },
+  {
+    id: "Designation",
+    label: "Designation",
+    align: "right",
+  }
 ];
 
 export default function LessonList(props) {
@@ -81,11 +83,10 @@ export default function LessonList(props) {
 
   const [data, setData] = useState([]);
 
-  const navigate = useNavigate();
 
   const getLessonList = async () => {
     try {
-      const { data } = await axios.get("/admin/get-lessons");
+      const { data } = await axios.get("/admin/users");
 
       setData(data);
     } catch (e) {}
@@ -100,9 +101,9 @@ export default function LessonList(props) {
     setPage(0);
   };
 
-  const deleteLesson = async (id) => {
+  const deleteUser = async (id) => {
     try {
-      await axios.delete(`/admin/delete-lesson/${id}`);
+      await axios.delete(`/admin/delete-user/${id}`);
       getLessonList();
     } catch (err) {}
   };
@@ -131,7 +132,7 @@ export default function LessonList(props) {
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
-                Lesson List
+                Users
               </Typography>
               <div
                 style={{
@@ -182,13 +183,13 @@ export default function LessonList(props) {
                       tabIndex={-1}
                       key={row.code}
                     >
-                      <TableCell>{row?.lessonName}</TableCell>
-                      <TableCell>{row?.lessonDescription}</TableCell>
-                      <TableCell>{row?.subject}</TableCell>
+                      <TableCell>{row?._id}</TableCell>
+                      <TableCell>{row?.userName}</TableCell>
+                      <TableCell>{row?.designation}</TableCell>
                       <TableCell>
                         <Button
                           variant="outlined"
-                          onClick={() => deleteLesson(row?._id)}
+                          onClick={() => deleteUser(row?._id)}
                         >
                           <DeleteIcon color="error" />
                         </Button>
@@ -198,22 +199,6 @@ export default function LessonList(props) {
                 })}
             </TableBody>
           </Table>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              position: "relative",
-              padding: 25,
-            }}
-          >
-            <Fab
-              color="secondary"
-              aria-label="add"
-              onClick={() => navigate("/addLesson")}
-            >
-              <AddIcon />
-            </Fab>
-          </div>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}

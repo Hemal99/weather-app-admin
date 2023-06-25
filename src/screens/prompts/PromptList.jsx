@@ -16,15 +16,16 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 
-import { Typography, Button,  } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import Chip from "@mui/material/Chip";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "../../utils/lib/axios";
 
-
 import PopupBox from "components/UI/PopupBox";
 import { Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -89,17 +90,16 @@ export default function LessonList(props) {
   const [selectedRow, setSelectedRow] = useState({});
   const [searchText, setSearchText] = useState("");
 
-
   const [data, setData] = useState([]);
   const [filterData, setFilterData] = useState(data);
 
+  const navigate = useNavigate();
 
   const [alert, setAlert] = useState({
     showAlert: false,
     severity: "success",
     message: "",
   });
-
 
   const getPromptsList = async () => {
     try {
@@ -119,26 +119,25 @@ export default function LessonList(props) {
   };
 
   const handleOpen = (row) => {
-    console.log(row)
+    console.log(row);
     setSelectedRow(row);
     setOpen(true);
-  }
+  };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
-  const deleteLesson = async (id) => {
+  const deletePrompt = async (id) => {
     try {
       await axios.delete(`/admin/delete-prompt/${id}`);
       getPromptsList();
     } catch (err) {}
   };
 
-
-   //search
-   const onSearch = (e) => {
+  //search
+  const onSearch = (e) => {
     const text = String(e.target.value).toLowerCase();
     setSearchText(text);
     if (text) {
@@ -155,6 +154,10 @@ export default function LessonList(props) {
     }
   };
 
+  const editPrompt = (id) => {
+    navigate(`/edit-prompt/${id}`);
+  };
+
   useEffect(() => {
     getPromptsList();
   }, []);
@@ -162,13 +165,14 @@ export default function LessonList(props) {
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>
-        {
-          alert.showAlert && (
-            <Alert severity={alert.severity} onClose={() => setAlert({ ...alert, showAlert: false })}>
-              {alert.message}
-            </Alert>
-          )
-        }
+        {alert.showAlert && (
+          <Alert
+            severity={alert.severity}
+            onClose={() => setAlert({ ...alert, showAlert: false })}
+          >
+            {alert.message}
+          </Alert>
+        )}
         <AppBar position="static">
           <Toolbar>
             <div
@@ -225,6 +229,9 @@ export default function LessonList(props) {
                   View Prompt
                 </TableCell>
                 <TableCell key="command" align="left">
+                  Edit
+                </TableCell>
+                <TableCell key="command" align="left">
                   Delete
                 </TableCell>
               </TableRow>
@@ -245,20 +252,47 @@ export default function LessonList(props) {
                         <TableCell>{row?.description}</TableCell>
                         <TableCell>
                           {row?.status === "Approved" ? (
-                            <Chip label="Approved" color="success" variant="outlined" />
+                            <Chip
+                              label="Approved"
+                              color="success"
+                              variant="outlined"
+                            />
                           ) : row?.status === "Pending" ? (
-                            <Chip label="Pending" color="primary"  variant="outlined" />
+                            <Chip
+                              label="Pending"
+                              color="primary"
+                              variant="outlined"
+                            />
                           ) : row?.status === "Rejected" ? (
-                            <Chip label="Rejected" color="error"  variant="outlined" />
-                          ):""}
-                        </TableCell>
-                        <TableCell>
-                          <Button variant="outlined" onClick={()=>handleOpen(row)}>View</Button>
+                            <Chip
+                              label="Rejected"
+                              color="error"
+                              variant="outlined"
+                            />
+                          ) : (
+                            ""
+                          )}
                         </TableCell>
                         <TableCell>
                           <Button
                             variant="outlined"
-                            onClick={() => deleteLesson(row?._id)}
+                            onClick={() => handleOpen(row)}
+                          >
+                            View
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outlined"
+                            onClick={() => editPrompt(row?._id)}
+                          >
+                            <EditIcon color="primary" />
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outlined"
+                            onClick={() => deletePrompt(row?._id)}
                           >
                             <DeleteIcon color="error" />
                           </Button>
@@ -299,11 +333,8 @@ export default function LessonList(props) {
         open={open}
         handleClose={handleClose}
         selectedRow={selectedRow}
-        // slip={slip}
-        // id={id}
         getPromptsList={getPromptsList}
         setAlert={setAlert}
-        // paymentId={paymentId}
       />
     </React.Fragment>
   );
