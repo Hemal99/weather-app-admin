@@ -59,7 +59,7 @@ function AddPrompt() {
         prompt: e.prompt,
       };
 
-      await axios.patch(`/user/update-prompt/${id}`, payload);
+      await axios.patch(`/admin/update-prompt-by-admin/${id}`, payload);
 
       resetForm({});
 
